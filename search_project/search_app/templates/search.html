@@ -1,3 +1,7 @@
+{% extends './base.html' %}
+
+{% block content %}
+
 <form method="get">
     <!-- 検索キーワード入力 -->
      {{ form.as_p }}
@@ -63,3 +67,4 @@
     {% endfor %}
     </ul>
     
+{% endblock %}
