@@ -1,32 +1,25 @@
 {% extends './base.html' %}
 
 {% block content %}
-<div class="d-flex justify-content-center">
-    <div class="w-50 p-4 m-4 bg-light-subtle border rounded text-primary-emphasis">
         <form method="get">
             <!-- 検索キーワード入力 -->
-            <div class="pt-2">
+            
             {{ form.as_p }}
-            </div>
-            <!-- カテゴリの選択 -->
-            <div class="pt-2">
-                <label for="category">カテゴリ:</label>
 
+            <!-- カテゴリの選択 -->
+            <label for="category">カテゴリ:</label>
                 <select name="category">
                     <option value="">すべて</option>
                     <option value="本">本</option>
                     <option value="電子機器">電子機器</option>
                     <!-- 他のカテゴリを追加 -->
                 </select>
-            </div>
 
             <!-- 価格範囲の入力 -->
-            <div class="pt-4">
                 <label for="min_price">最低価格:</label>
                 <input type="number" name="min_price" min="0">
                 <label for="max_price">最高価格:</label>
                 <input type="number" name="max_price" min="0">
-            </div>
             <!-- 並び替えの選択 -->
             <label for="sort">並び替え:</label>
 
@@ -37,9 +30,7 @@
             </select>
             <button type="submit">検索</button>
         </form>
-    </div>
-</div>
-    
+
    <ul>
    {% for product in results %}
     <li>{{ product.name }} - {{ product.price }}</li>
