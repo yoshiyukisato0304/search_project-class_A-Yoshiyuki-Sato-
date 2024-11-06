@@ -2,44 +2,54 @@
 
 {% block content %}
 
-<div class="border rounded">
-    <form method="get">
-        <!-- 検索キーワード入力 -->
-        {{ form.as_p }}
 
-        <!-- カテゴリの選択 -->
-        <label for="category">カテゴリ:</label>
-            <select name="category">
+<div class="container mt-4">
+    <!-- 検索フォームを展開するためのボタン -->
+    <button class="mb-4 text-dark btn btn-light boder border-dark" type="button" data-bs-toggle="collapse" data-bs-target="#searchForm" aria-expanded="false" aria-controls="searchForm">
+        検索オプション
+    </button>
+
+    <!-- 検索フォーム -->
+    <div class="collapse mt-3" id="searchForm">
+        <form method="get">
+            <!-- 検索キーワード入力 -->
+            {{ form.as_p }}
+
+            <!-- カテゴリの選択 -->
+            <label for="category">カテゴリ:</label>
+            <select name="category" id="category" class="form-select">
                 <option value="">すべて</option>
                 <option value="本">本</option>
                 <option value="電子機器">電子機器</option>
                 <!-- 他のカテゴリを追加 -->
             </select>
 
-        <!-- 価格範囲の入力 -->
+            <!-- 価格範囲の入力 -->
             <label for="min_price">最低価格:</label>
-            <input type="number" name="min_price" min="0">
+            <input type="number" name="min_price" id="min_price" min="0" class="form-control">
             <label for="max_price">最高価格:</label>
-            <input type="number" name="max_price" min="0">
-        <!-- 並び替えの選択 -->
-        <label for="sort">並び替え:</label>
+            <input type="number" name="max_price" id="max_price" min="0" class="form-control">
 
-        <select name="sort">
-            <option value="name">名前順</option>
-            <option value="price_asc">価格が安い順</option>
-            <option value="price_desc">価格が高い順</option>
-        </select>
-        <button type="submit">検索</button>
-    </form>
-</div>
+            <!-- 並び替えの選択 -->
+            <label for="sort">並び替え:</label>
+            <select name="sort" id="sort" class="form-select">
+                <option value="name">名前順</option>
+                <option value="price_asc">価格が安い順</option>
+                <option value="price_desc">価格が高い順</option>
+            </select>
+            <button type="submit" class="btn btn-light text-dark border border-dark mt-2">検索</button>
+        </form>
+    </div>
 
-   <ul>
+
+
+   <!-- <ul>
    {% for product in results %}
     <li>{{ product.name }} - {{ product.price }}</li>
    {% empty %}
     <li>No results found</li>
    {% endfor %}
-   </ul>
+   </ul> -->
    <div class="pagination">
     <span class="step-links">
     {% if page_obj.has_previous %}
@@ -67,6 +77,6 @@
     {% endfor %}
     </ul>
 
-    
+</div>
     
 {% endblock %}

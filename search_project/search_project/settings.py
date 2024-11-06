@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'search_app.apps.SearchAppConfig',
+	'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [
