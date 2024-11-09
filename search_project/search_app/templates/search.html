@@ -42,32 +42,43 @@
     </div>
 
 
-   <div class="pagination">
+   <div class="pagination m-2">
     <span class="step-links">
     {% if page_obj.has_previous %}
-    <a href="?page=1">最初</a> <!-- 最初のページへのリンク -->
+    <a href="?page=1" class="btn btn-light btn-sm border border-dark">最初</a> <!-- 最初のページへのリンク -->
    <!-- 前のページへのリンク -->
-    <a href="?page={{ page_obj.previous_page_number }}">前へ</a>
+    <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-light btn-sm border border-dark">前へ</a>
     {% endif %}
     <span class="current">
     ページ {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
     </span>
     {% if page_obj.has_next %}
    <!-- 次のページへのリンク -->
-    <a href="?page={{ page_obj.next_page_number }}">次へ</a> 
+    <a href="?page={{ page_obj.next_page_number }}" class="btn btn-light btn-sm border border-dark">次へ</a> 
    <!-- 最後のページへのリンク -->
-    <a href="?page={{ page_obj.paginator.num_pages }}">最後</a>
+    <a href="?page={{ page_obj.paginator.num_pages }}" class="btn btn-light btn-sm border border-dark">最後</a>
     {% endif %}
     </span>
    </div>
       
-   <ul>
-    {% for product in page_obj %}
-     <li>{{ product.name }} - {{ product.price }}</li>
-    {% empty %}
-     <li>No results found</li>
-    {% endfor %}
-    </ul>
+    <div class="w-85 border rounded border-dark">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 m-2">
+        {% for product in page_obj %}
+        <div class="col">
+            <div class="card w-20 m-1">
+                <div class="card-title">
+                {{ product.name }}
+                </div>
+                <div class="card-body">
+                価格-{{ product.price }}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+            No results found
+        {% endfor %}
+        </div>
+    </div>
 
 </div>
     
