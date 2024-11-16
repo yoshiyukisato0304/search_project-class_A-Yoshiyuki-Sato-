@@ -2,33 +2,34 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Product, Category
 from .forms import ProductForm, SearchForm
 from django.core.paginator import Paginator
+from django.shortcuts import render
 
 def product_create(request):
     if request.method == 'POST':
-        form = ProductForm(request.POST)
+        form = ProductForm(request.POST,request.FILES,)
         if form.is_valid():
             form.save()
             return redirect('product_list')
     else:
         form = ProductForm()
-        return render(request, 'product_form.html', {'form': form})
+        return render(request, 'search_app/product_form.html', {'form': form})
 
 
 def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
-    return render(request, 'product_detail.html', {'product': product})
+    return render(request, 'search_app/product_detail.html', {'product': product})
 
 def product_update(request, pk):
     product = get_object_or_404(Product, pk=pk)
     if request.method == 'POST':
-        form = ProductForm(request.POST, instance=product)
+        form = ProductForm(request.POST,request.FILES, instance=product)
         if form.is_valid():
             form.save()
             return redirect('product_detail', pk=product.pk)
     else:
         form = ProductForm(instance=product)
     # product オブジェクトをテンプレートに渡す
-    return render(request, 'product_form.html', {'form': form, 'product':
+    return render(request, 'search_app/product_form.html', {'form': form, 'product':
     product})
     43
 
@@ -38,10 +39,10 @@ def product_delete(request, pk):
     if request.method == 'POST':
         product.delete()
         return redirect('product_list')
-    return render(request, 'product_confirm_delete.html', {'product': product})
+    return render(request, 'search_app/product_confirm_delete.html', {'product': product})
 def product_list(request):
     products = Product.objects.all()
-    return render(request, 'product_list.html', {'products': products})
+    return render(request, 'search_app/product_list.html', {'products': products})
 
 
 
@@ -86,4 +87,4 @@ def search_view(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
  
-    return render(request, 'search.html', {'form': form, 'page_obj': page_obj})
+    return render(request, 'search_app/search.html', {'form': form, 'page_obj': page_obj})
