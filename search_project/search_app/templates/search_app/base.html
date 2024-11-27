@@ -14,17 +14,17 @@
 	<header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
-                <a class="navbar-brand border-bottom border-dark" href="{% url 'search_view' %}">ホーム</a>
+                <a class="navbar-brand border-bottom border-dark" href="{% url 'search_app:search_view' %}">ホーム</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link border-bottom border-dark me-2" href="{% url 'product_create' %}">作成</a>
+                            <a class="nav-link border-bottom border-dark me-2" href="{% url 'search_app:product_create' %}">作成</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link border-bottom border-dark" href="{% url 'product_list' %}">一覧</a>
+                            <a class="nav-link border-bottom border-dark" href="{% url 'search_app:product_list' %}">一覧</a>
                         </li>
                     </ul>
                 </div>
