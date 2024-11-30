@@ -31,13 +31,13 @@
 							<p class="card-text"><strong>{{ product.price|floatformat:0|intcomma }}円</strong></p>
 							<!-- ボタンの配置 -->
 								<div class="d-flex justify-content-between mt-4">
-									<a href="{% url 'product_update' product.pk %}" class="btn btn-secondary">編集</a>
-									<form action="{% url 'product_delete' product.pk %}" method="POST" onsubmit="return
+									<a href="{% url 'search_app:product_update' product.pk %}" class="btn btn-secondary">編集</a>
+									<form action="{% url 'search_app:product_delete' product.pk %}" method="POST" onsubmit="return
 									confirm('本当に削除しますか？');">
 									{% csrf_token %}
 									<button type="submit" class="btn btn-danger">削除</button>
 									</form>
-									<a href="{% url 'product_list' %}" class="btn btn-primary">商品一覧に戻る</a>
+									<a href="{% url 'search_app:product_list' %}" class="btn btn-primary">商品一覧に戻る</a>
 								</div>
 						</div>
 					</div>

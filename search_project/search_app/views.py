@@ -8,7 +8,9 @@ def product_create(request):
     if request.method == 'POST':
         form = ProductForm(request.POST,request.FILES,)
         if form.is_valid():
-            form.save()
+            product = form.save(commit=False)
+            product.createuser = request.user  # ログインしているユーザーをセット
+            product.save()  # 保存
             return redirect('product_list')
     else:
         form = ProductForm()

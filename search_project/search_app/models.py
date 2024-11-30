@@ -1,4 +1,5 @@
 from django.db import models
+from account.models import CustomUser
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
@@ -21,6 +22,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     image = models.ImageField(upload_to='images/', null=True ,blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, default=0)
+    createuser = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True)
     # 1 はカテゴリ ID
     def __str__(self):
         return self.name

@@ -28,6 +28,17 @@
                         </li>
                     </ul>
                 </div>
+                {% if request.user.is_authenticated %}
+                <form id="logout-form" action="{% url 'account:logout' %}" method="post" style="display: none;">
+                    {% csrf_token %}
+                </form>
+                <a class="nav-link border-bottom border-dark" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    ログアウト
+                </a>
+                {% else %}
+                <a class="nav-link border-bottom border-dark me-2" href="{% url 'account:login' %}">ログイン</a>
+                <a class="nav-link border-bottom border-dark" href="{% url 'account:signup' %}">サインアップ</a>
+                {% endif %}
             </div>
         </nav>
     </header>

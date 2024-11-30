@@ -2,6 +2,7 @@
 
 {% block content %}
 
+{% if request.user.is_authenticated %}
 
 <!DOCTYPE html>
 <html lang="ja">
@@ -19,6 +20,7 @@ rel="stylesheet">
 <!-- 商品リスト -->
 <ul class="list-group">
 {% for product in products %}
+{% if product.createuser == request.user %}
 <li class="list-group-item d-flex justify-content-between align-items-center">
 <div>
 <h5>{{ product.name }}</h5>
@@ -26,22 +28,25 @@ rel="stylesheet">
 </div>
 <div>
 <!-- 編集ボタン -->
-<a href="{% url 'product_update' product.id %}" class="btn btn-primary me-2">編集</a>
+<a href="{% url 'search_app:product_update' product.id %}" class="btn btn-primary me-2">編集</a>
 <!-- 削除ボタン -->
-<form action="{% url 'product_delete' product.id %}" method="POST" style="display:inline;"
+<form action="{% url 'search_app:product_delete' product.id %}" method="POST" style="display:inline;"
 onsubmit="return confirm('本当に削除しますか？');">
 {% csrf_token %}
 <button type="submit" class="btn btn-danger">削除</button>
 </form>
 </div>
 </li>
-{% empty %}
-<li class="list-group-item">商品がありません。</li>
+
+{% else %}
+
+{% endif %}
+
 {% endfor %}
 </ul>
 <!-- 最初の画面に戻るボタン -->
 <div class="mt-4 text-center">
-<a href="{% url 'search_view' %}" class="btn btn-secondary">最初の画面に戻る</a>
+<a href="{% url 'search_app:search_view' %}" class="btn btn-secondary">最初の画面に戻る</a>
 </div>
 </div>
 <!-- Bootstrap JS -->
@@ -50,5 +55,9 @@ alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
 
+{% else %}
+この機能はログインしないと利用できません
+
+{% endif %}
 
 {% endblock %}
