@@ -67,20 +67,22 @@
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 m-2">
         {% for product in page_obj %}
         <div class="col">
-            <div class="card w-20 m-1">
+            <div class="border rounded border-dark w-20 m-1 p-2 ">
+            <a href="{% url 'search_app:product_detail' product.id %}" class="class=card text-decoration-none text-dark">
                 <div class="card-title">
                 {{ product.name }}
                 </div>
                 <div class="card-body">
                         <div class="productimages">
                         {% if product.image %}
-                            <img src="{{ product.image.url }}" alt="{{ product.name }}" width="70%">
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}" width="50%" class=" m-1 border rounded border-light">
                         {% else %}
-                            <img src="{% static 'images/image.jpg' %}" alt="No image available" width="70%">
+                            <img src="{% static 'images/image.jpg' %}" alt="No image available" width="50%" class="m-1 border rounded border-light">
                         {% endif %}
-                    </div>
+                        </div>
                     価格-{{ product.price }}
                 </div>
+            </a>
             </div>
         </div>
         {% empty %}

@@ -2,7 +2,7 @@
 
 {% block content %}
 
-
+{% load static %}
 {% load humanize %}
 <!DOCTYPE html>
 <html lang="ja">
@@ -22,21 +22,21 @@
 		<div class="container mt-5">
 			<div class="row justify-content-center">
 				<div class="col-md-8">
-					<h1 class="text-center mb-4">{{ product.name }}の詳細</h1>
 					<!-- 商品詳細カード -->
 					<div class="card shadow-sm">
 						<div class="card-body">
 							<h2 class="card-title">{{ product.name }}</h2>
+							<div class="productimages">
+								{% if product.image %}
+									<img src="{{ product.image.url }}" alt="{{ product.name }}" width="70%">
+								{% else %}
+									<img src="{% static 'images/image.jpg' %}" alt="No image available" width="70%">
+								{% endif %}
+							</div>
 							<p class="card-text">{{ product.description }}</p>
 							<p class="card-text"><strong>{{ product.price|floatformat:0|intcomma }}円</strong></p>
 							<!-- ボタンの配置 -->
 								<div class="d-flex justify-content-between mt-4">
-									<a href="{% url 'search_app:product_update' product.pk %}" class="btn btn-secondary">編集</a>
-									<form action="{% url 'search_app:product_delete' product.pk %}" method="POST" onsubmit="return
-									confirm('本当に削除しますか？');">
-									{% csrf_token %}
-									<button type="submit" class="btn btn-danger">削除</button>
-									</form>
 									<a href="{% url 'search_app:product_list' %}" class="btn btn-primary">商品一覧に戻る</a>
 								</div>
 						</div>

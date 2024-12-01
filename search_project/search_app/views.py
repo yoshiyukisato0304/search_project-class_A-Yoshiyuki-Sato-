@@ -11,7 +11,7 @@ def product_create(request):
             product = form.save(commit=False)
             product.createuser = request.user  # ログインしているユーザーをセット
             product.save()  # 保存
-            return redirect('product_list')
+            return redirect('search_app:product_list')
     else:
         form = ProductForm()
         return render(request, 'search_app/product_form.html', {'form': form})
@@ -27,7 +27,7 @@ def product_update(request, pk):
         form = ProductForm(request.POST,request.FILES, instance=product)
         if form.is_valid():
             form.save()
-            return redirect('product_detail', pk=product.pk)
+            return redirect('search_app:product_detail', pk=product.pk)
     else:
         form = ProductForm(instance=product)
     # product オブジェクトをテンプレートに渡す
@@ -63,7 +63,6 @@ def search_view(request):
         try:
     # カテゴリ名に基づいてカテゴリ ID を取得
             category = Category.objects.get(name=category_name)
-            print(category)
             results = results.filter(category_id=category.id)
         except Category.DoesNotExist:
             results = results.none() # 存在しないカテゴリの場合、結果を空にする
@@ -78,11 +77,19 @@ def search_view(request):
         results = results.filter(price__lte=max_price) 
 
     # 並び替え処理 
+    # sort_by = request.GET.get('sort', 'name') 
+    # if sort_by == 'price_asc': 
+    #     results = results.order_by('price') 
+    # elif sort_by == 'price_desc': 
+    #     results = results.order_by('-price')
+
     sort_by = request.GET.get('sort', 'name') 
     if sort_by == 'price_asc': 
         results = results.order_by('price') 
     elif sort_by == 'price_desc': 
-        results = results.order_by('-price')
+        results = results.order_by('-price') 
+    else:
+        results = results.order_by('name')  # デフォルトの並び替え
  
     # クエリセットをリストに変換せず、直接 Paginator に渡す
     paginator = Paginator(results, 10)
