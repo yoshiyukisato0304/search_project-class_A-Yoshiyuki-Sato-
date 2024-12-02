@@ -15,6 +15,8 @@ urlpatterns = [
     path('product/<int:pk>/delete', views.product_delete,
     name='product_delete'),
     path('product/', views.product_list, name='product_list'),
+    path('product/<int:product_id>/favorite/', views.favorite_product, name='favorite_product'),
+    path('favorite_list/', views.favorite_list, name='favorite_list'), 
 ]
 
 if settings.DEBUG:

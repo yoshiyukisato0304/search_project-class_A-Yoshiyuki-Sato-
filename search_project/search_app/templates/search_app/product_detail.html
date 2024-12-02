@@ -43,6 +43,16 @@
 					</div>
 				</div>
 			</div>
+			{% if request.user.is_authenticated %}
+   			 <form action="{% url 'search_app:favorite_product' product.id %}" method="POST">
+        	{% csrf_token %}
+        	{% if product in user.favorite_place.all %}
+            <button type="submit">お気に入りから削除</button>
+        	{% else %}
+            <button type="submit">お気に入りに追加</button>
+        	{% endif %}
+    </form>
+{% endif %}
 		</div>
 		<!-- Bootstrap JS -->
 		<script src="https://cdn.jsdelivr.net/npm

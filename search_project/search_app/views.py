@@ -42,6 +42,7 @@ def product_delete(request, pk):
         product.delete()
         return redirect('product_list')
     return render(request, 'search_app/product_confirm_delete.html', {'product': product})
+
 def product_list(request):
     products = Product.objects.all()
     return render(request, 'search_app/product_list.html', {'products': products})
@@ -97,3 +98,17 @@ def search_view(request):
     page_obj = paginator.get_page(page_number)
  
     return render(request, 'search_app/search.html', {'form': form, 'page_obj': page_obj})
+
+
+
+def favorite_product(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    if product in request.user.favorite_place.all():
+        request.user.favorite_place.remove(product)
+    else:
+        request.user.favorite_place.add(product)
+    return redirect('search_app:product_detail', pk=product.id)
+
+def favorite_list(request):
+    favorite_products = request.user.favorite_place.all()
+    return render(request, 'search_app/favorite_list.html', {'favorite_products': favorite_products})
