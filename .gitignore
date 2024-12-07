@@ -1,0 +1,54 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+*.egg-info/
+dist/
+build/
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+media/
+
+# If you are using MySQL, MariaDB or PostgreSQL, you might want to ignore the database migrations:
+# Comment out the following line if you want to commit database migrations
+migrations/
+
+# If your Django project uses a custom user model, you might want to ignore the user model migrations:
+# Comment out the following line if you want to commit user model migrations
+users/migrations/
+
+# If you are using SQLite, uncomment the following line to ignore the SQLite database file:
+#*.sqlite3
+
+# Static and media files
+staticfiles/
+media/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# VS Code
+.vscode/
+
+# PyCharm
+.idea/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
