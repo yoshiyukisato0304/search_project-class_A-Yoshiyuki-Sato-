@@ -1,17 +1,17 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Product, Category
-from .forms import ProductForm, SearchForm
+from .forms import ProductForm, SearchForm, ProductCompareForm
 from django.core.paginator import Paginator
 from django.shortcuts import render
 
 def product_create(request):
     if request.method == 'POST':
         form = ProductForm(request.POST,request.FILES,)
-        if form.is_valid():
+        if form.is_valid():#フォームが有効かの確認.
             product = form.save(commit=False)
-            product.createuser = request.user  # ログインしているユーザーをセット
-            product.save()  # 保存
-            return redirect('search_app:product_list')
+            product.createuser = request.user  # ログインしているユーザーをセット.
+            product.save()  # 保存.
+            return redirect('search_app:search_view')
     else:
         form = ProductForm()
         return render(request, 'search_app/product_form.html', {'form': form})
@@ -20,6 +20,7 @@ def product_create(request):
 def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
     return render(request, 'search_app/product_detail.html', {'product': product})
+
 
 def product_update(request, pk):
     product = get_object_or_404(Product, pk=pk)
@@ -43,10 +44,10 @@ def product_delete(request, pk):
         return redirect('product_list')
     return render(request, 'search_app/product_confirm_delete.html', {'product': product})
 
+
 def product_list(request):
     products = Product.objects.all()
     return render(request, 'search_app/product_list.html', {'products': products})
-
 
 
 def search_view(request):
@@ -77,13 +78,6 @@ def search_view(request):
     if max_price: 
         results = results.filter(price__lte=max_price) 
 
-    # 並び替え処理 
-    # sort_by = request.GET.get('sort', 'name') 
-    # if sort_by == 'price_asc': 
-    #     results = results.order_by('price') 
-    # elif sort_by == 'price_desc': 
-    #     results = results.order_by('-price')
-
     sort_by = request.GET.get('sort', 'name') 
     if sort_by == 'price_asc': 
         results = results.order_by('price') 
@@ -112,3 +106,19 @@ def favorite_product(request, product_id):
 def favorite_list(request):
     favorite_products = request.user.favorite_place.all()
     return render(request, 'search_app/favorite_list.html', {'favorite_products': favorite_products})
+
+def compare_products(request):
+    if request.method == 'POST':
+        form = ProductCompareForm(request.POST)
+        if form.is_valid():
+            product1 = form.cleaned_data['product1']
+            product2 = form.cleaned_data['product2']
+            context = {
+                'product1': product1,
+                'product2': product2,
+            }
+            return render(request, 'search_app/compare_result.html', context)
+    else:
+        form = ProductCompareForm()
+
+    return render(request, 'search_app/compare_choice.html', {'form': form})

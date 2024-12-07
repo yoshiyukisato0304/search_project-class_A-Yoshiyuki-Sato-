@@ -1,0 +1,23 @@
+{% extends 'search_app/base.html' %}
+
+{% block content %}
+<head>
+    <title>Compare Products</title>
+</head>
+<body>
+    <div class="container mt-5 d-flex justify-content-center">
+        <div class="w-50">
+            <h1 class="mb-4 text-center">比較する商品を選択</h1>
+            <form method="post" class="mt-2 p-5 border-dark border rounded">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">比較する</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+</body>
+
+{% endblock %}

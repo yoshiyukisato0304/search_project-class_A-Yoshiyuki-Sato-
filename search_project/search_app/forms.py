@@ -16,3 +16,7 @@ class ProductForm(forms.ModelForm):
         fields = ['name', 'description', 'price', 'image', 'category']
 
         exclude = ['createuser']
+
+class ProductCompareForm(forms.Form):
+    product1 = forms.ModelChoiceField(queryset=Product.objects.all(), label="商品1")
+    product2 = forms.ModelChoiceField(queryset=Product.objects.all(), label="商品2")

@@ -19,7 +19,7 @@ class Product(models.Model):
     id = models.BigAutoField(primary_key=True)
     name = models.CharField(max_length=255)
     description = models.TextField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.IntegerField()
     image = models.ImageField(upload_to='images/', null=True ,blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, default=0)
     createuser = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True)
