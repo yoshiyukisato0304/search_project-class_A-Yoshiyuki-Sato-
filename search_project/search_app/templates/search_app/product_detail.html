@@ -35,24 +35,28 @@
 							</div>
 							<p class="card-text">{{ product.description }}</p>
 							<p class="card-text"><strong>{{ product.price|floatformat:0|intcomma }}円</strong></p>
+
+
 							<!-- ボタンの配置 -->
-								<div class="d-flex justify-content-between mt-4">
-									<a href="{% url 'search_app:search_view' %}" class="btn btn-primary">商品一覧に戻る</a>
-								</div>
+
+							{% if request.user.is_authenticated %}
+								<form action="{% url 'search_app:favorite_product' product.id %}" method="POST" >
+									{% csrf_token %}
+									{% if product in user.favorite_place.all %}
+									<button type="submit" class="btn btn-primary">お気に入りから削除</button>
+									{% else %}
+									<button type="submit" class="btn btn-primary">お気に入りに追加</button>
+									{% endif %}
+								</form>
+							{% endif %}
+
+							<div class="d-flex justify-content-between mt-4">
+								<a href="{% url 'search_app:search_view' %}" class="btn btn-primary">商品一覧に戻る</a>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			{% if request.user.is_authenticated %}
-   			 <form action="{% url 'search_app:favorite_product' product.id %}" method="POST">
-        	{% csrf_token %}
-        	{% if product in user.favorite_place.all %}
-            <button type="submit">お気に入りから削除</button>
-        	{% else %}
-            <button type="submit">お気に入りに追加</button>
-        	{% endif %}
-    </form>
-{% endif %}
 		</div>
 		<!-- Bootstrap JS -->
 		<script src="https://cdn.jsdelivr.net/npm
