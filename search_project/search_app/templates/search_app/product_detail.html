@@ -56,6 +56,62 @@
 						</div>
 					</div>
 				</div>
+			
+
+				<div class="d-flex flex-column justify-content-center align-items-center my-5">
+					<h3>閲覧中の商品と同じカテゴリの商品です</h3><br>
+					<div id="carouselExample" class="carousel slide" style="max-width: 600px;">
+						<div class="carousel-inner">
+							<div class="carousel-item active">
+								<a href="{% url 'search_app:product_detail' product.id %}" class="card text-decoration-none text-dark">
+									<div class="card-title">
+										{{ recommendedfirst.name }}
+									</div>
+									<div class="card-body">
+										<div class="productimages">
+											{% if recommendedfirst.image %}
+												<img src="{{ recommendedfirst.image.url }}" alt="{{ recommendedfirst.name }}" width="50%" class="m-1 border rounded border-light">
+											{% else %}
+												<img src="{% static 'images/image.jpg' %}" alt="No image available" width="50%" class="m-1 border rounded border-light">
+											{% endif %}
+										</div>
+										価格-{{ recommendedfirst.price }}
+									</div>
+								</a>
+							</div>
+							{% for recommendedproduct in recommendedlist %}
+							<div class="carousel-item">
+								<a href="{% url 'search_app:product_detail' product.id %}" class="card text-decoration-none text-dark">
+									<div class="card-title">
+										{{ recommendedproduct.name }}
+									</div>
+									<div class="card-body">
+										<div class="productimages">
+											{% if recommendedproduct.image %}
+												<img src="{{ recommendedproduct.image.url }}" alt="{{ recommendedfirst.name }}" width="50%" class="m-1 border rounded border-light">
+											{% else %}
+												<img src="{% static 'images/image.jpg' %}" alt="No image available" width="50%" class="m-1 border rounded border-light">
+											{% endif %}
+										</div>
+										価格-{{ recommendedproduct.price }}
+									</div>
+								</a>
+							</div>
+							{% endfor %}
+						</div>
+						<button class="carousel-control-prev btn btn-light" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+							<span class="carousel-control-prev-icon bg-dark" aria-hidden="true"></span>
+							<span class="visually-hidden">Previous</span>
+						</button>
+						<button class="carousel-control-next btn btn-light" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+							<span class="carousel-control-next-icon bg-dark" aria-hidden="true"></span>
+							<span class="visually-hidden">Next</span>
+						</button>
+					</div>
+				</div>
+
+
+
 			</div>
 		</div>
 		<!-- Bootstrap JS -->

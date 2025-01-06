@@ -1,8 +1,9 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404,get_list_or_404, redirect
 from .models import Product, Category
 from .forms import ProductForm, SearchForm, ProductCompareForm
 from django.core.paginator import Paginator
 from django.shortcuts import render
+import random
 
 def product_create(request):
     if request.method == 'POST':
@@ -19,7 +20,24 @@ def product_create(request):
 
 def product_detail(request, pk):
     product = get_object_or_404(Product, pk=pk)
-    return render(request, 'search_app/product_detail.html', {'product': product})
+    product_list = get_list_or_404(Product, category=product.category)
+    product_list_as_list = list(product_list)
+
+    # 現在のproductを除外
+    product_list_as_list = [p for p in product_list_as_list if p != product]
+
+    if len(product_list_as_list) >= 5:
+        random_products = random.sample(product_list_as_list, min(5, len(product_list_as_list))) # リストが5件未満の場合に対応
+    else:
+        random_products = product_list_as_list
+
+    if len(random_products)>1:
+        recommendedfirst = random_products[0]
+        recommendlist = random_products[1:]
+    else:
+        recommendedfirst = random_products[0]
+
+    return render(request, 'search_app/product_detail.html', {'product': product, 'recommendedfirst': recommendedfirst, 'recommendedlist':recommendlist})
 
 
 def product_update(request, pk):
