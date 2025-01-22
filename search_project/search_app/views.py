@@ -4,6 +4,7 @@ from .forms import ProductForm, SearchForm, ProductCompareForm
 from django.core.paginator import Paginator
 from django.shortcuts import render
 import random
+from django.http import HttpResponseBadRequest
 
 def product_create(request):
     if request.method == 'POST':
@@ -127,16 +128,37 @@ def favorite_list(request):
 
 def compare_products(request):
     if request.method == 'POST':
-        form = ProductCompareForm(request.POST)
-        if form.is_valid():
-            product1 = form.cleaned_data['product1']
-            product2 = form.cleaned_data['product2']
+        # 最初の選択
+        if 'step' not in request.session:
+            product1_id = request.POST.get('product')
+            if not product1_id:
+                return HttpResponseBadRequest("Invalid product selection.")
+            product1 = get_object_or_404(Product, id=product1_id)
+            request.session['product1_id'] = product1.id
+            request.session['step'] = 1
+            return redirect('search_app:compare')
+
+        # 2回目の選択
+        elif request.session.get('step') == 1:
+            product2_id = request.POST.get('product')
+            if not product2_id:
+                return HttpResponseBadRequest("Invalid product selection.")
+            product1_id = request.session.get('product1_id')
+            product1 = get_object_or_404(Product, id=product1_id)
+            product2 = get_object_or_404(Product, id=product2_id)
+
+            # セッションをクリア
+            request.session.pop('product1_id', None)
+            request.session.pop('step', None)
+
+            # 結果をレンダリング
             context = {
                 'product1': product1,
                 'product2': product2,
             }
             return render(request, 'search_app/compare_result.html', context)
-    else:
-        form = ProductCompareForm()
 
-    return render(request, 'search_app/compare_choice.html', {'form': form})
+    # 選択画面
+    products = Product.objects.all()
+    step = request.session.get('step', 0)
+    return render(request, 'search_app/compare_choice.html', {'products': products, 'step': step})
