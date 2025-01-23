@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404,get_list_or_404, redirect
 from .models import Product, Category
-from .forms import ProductForm, SearchForm, ProductCompareForm
+from .forms import ProductForm, SearchForm, ProductCompareForm ,SearchFormforCompare
 from django.core.paginator import Paginator
 from django.shortcuts import render
 import random
@@ -127,38 +127,44 @@ def favorite_list(request):
     return render(request, 'search_app/favorite_list.html', {'favorite_products': favorite_products})
 
 def compare_products(request):
+    form = SearchFormforCompare(request.GET or None)
+    results = Product.objects.all()
+
+    if form.is_valid():
+        query = form.cleaned_data.get('query')
+        if query:
+            results = results.filter(name__icontains=query)
+
+    category_name = request.GET.get('category')
+    if category_name:
+        try:
+            category = Category.objects.get(id=category_name) #category_nameにはpkのidが渡されている.
+            results = results.filter(category=category) # category_idではなくcategoryで直接フィルタ.
+        except Category.DoesNotExist:
+            results = Product.objects.none()
+
+    min_price = request.GET.get('min_price')
+    max_price = request.GET.get('max_price')
+    if min_price:
+        results = results.filter(price__gte=min_price)
+    if max_price:
+        results = results.filter(price__lte=max_price)
+
     if request.method == 'POST':
-        # 最初の選択
-        if 'step' not in request.session:
-            product1_id = request.POST.get('product')
-            if not product1_id:
-                return HttpResponseBadRequest("Invalid product selection.")
+        product_id = request.POST.get('product')
+        if not product_id:
+            return HttpResponseBadRequest("Invalid product selection.")
+
+        if 'product1_id' not in request.session:
+            request.session['product1_id'] = int(product_id)
+            return redirect(request.path + '?step=1&' + request.GET.urlencode()) # URLパラメータを保持
+        else:
+            product1_id = request.session.pop('product1_id')
             product1 = get_object_or_404(Product, id=product1_id)
-            request.session['product1_id'] = product1.id
-            request.session['step'] = 1
-            return redirect('search_app:compare')
-
-        # 2回目の選択
-        elif request.session.get('step') == 1:
-            product2_id = request.POST.get('product')
-            if not product2_id:
-                return HttpResponseBadRequest("Invalid product selection.")
-            product1_id = request.session.get('product1_id')
-            product1 = get_object_or_404(Product, id=product1_id)
-            product2 = get_object_or_404(Product, id=product2_id)
-
-            # セッションをクリア
-            request.session.pop('product1_id', None)
-            request.session.pop('step', None)
-
-            # 結果をレンダリング
-            context = {
-                'product1': product1,
-                'product2': product2,
-            }
+            product2 = get_object_or_404(Product, id=product_id)
+            context = {'product1': product1, 'product2': product2}
             return render(request, 'search_app/compare_result.html', context)
 
-    # 選択画面
-    products = Product.objects.all()
-    step = request.session.get('step', 0)
-    return render(request, 'search_app/compare_choice.html', {'products': products, 'step': step})
+    step = int(request.GET.get('step', 0))
+    context = {'products': results, 'step': step, 'form': form} # フィルタリングされた結果を渡す
+    return render(request, 'search_app/compare_choice.html', context)

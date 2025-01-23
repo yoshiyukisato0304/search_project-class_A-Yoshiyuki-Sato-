@@ -60,7 +60,8 @@
 
 				<div class="d-flex flex-column justify-content-center align-items-center my-5">
 					<h3>閲覧中の商品と同じカテゴリの商品です</h3><br>
-					<div id="carouselExample" class="carousel slide" style="max-width: 600px;">
+					<div id="carouselExample" class="carousel slide w-50" >
+					<!-- <div id="carouselExample" class="carousel slide" style="max-width: 600px;"> -->
 						<div class="carousel-inner">
 							<div class="carousel-item active">
 								<a href="{% url 'search_app:product_detail' product.id %}" class="card text-decoration-none text-dark">
